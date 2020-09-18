@@ -8,6 +8,7 @@ The application is written in C# / .net Core and has been tested on Windows - Ot
 
 ### Required Hardware
 You need a SerialCan/SLCAN compatible dongle. I used [that one](https://www.electrodragon.com/product/can-usb-debugger-board/)
+**WARNING** The linked dongle has **NO** galvanic isolation between PC and CAN Bus. Take care **before** connecting stuff together!
 
 ### Usage
 Märklin Firmware Updater for the MS2 and GB2 V1.0.0.0
