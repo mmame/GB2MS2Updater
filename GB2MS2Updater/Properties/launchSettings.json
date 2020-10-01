@@ -2,7 +2,7 @@
   "profiles": {
     "GB2MS2Updater": {
       "commandName": "Project",
-      "commandLineArgs": "-c COM18 -d GB2 -p %userprofile%\\\\documents\\\\cs3update_v2.10.btrfs\\\\mnt\\\\usr\\\\local\\\\cs3\\\\update -f"
+      "commandLineArgs": "-c COM18 -d MS2 -p %userprofile%\\\\documents\\\\cs3update_v2.10.btrfs\\\\mnt\\\\usr\\\\local\\\\cs3\\\\update"
     }
   }
 }

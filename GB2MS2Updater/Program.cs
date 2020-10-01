@@ -15,6 +15,7 @@ namespace GB2MS2Updater
                 DeviceType deviceType = 0;
                 bool forceUpdate = false;
                 bool verbose = false;
+                bool filesOnly = false;
                 int argParseState = 0;
                 
                 foreach (string arg in args)
@@ -26,7 +27,7 @@ namespace GB2MS2Updater
                             ShowUsage();
                             return;
                         }
-                        switch (arg)
+                        switch (arg.ToLower())
                         {
                             case "-c":
                                 argParseState = 1;
@@ -42,6 +43,10 @@ namespace GB2MS2Updater
 
                             case "-f":
                                 forceUpdate = true;
+                                break;
+
+                            case "-filesonly":
+                                filesOnly = true;
                                 break;
 
                             case "-v":
@@ -88,7 +93,14 @@ namespace GB2MS2Updater
                 DateTime startDateTime = DateTime.Now;
 
                 var updater = new GB2MS2Updater(comPort, Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"MaerklinCS2\CS2\update"), deviceType, verbose);
-                updater.StartUpdate(forceUpdate);
+                if (filesOnly)
+                {
+                    updater.UpdateMS2Files();
+                }
+                else
+                {
+                    updater.StartUpdate(forceUpdate);
+                }
 
                 Console.WriteLine("{0}s elapsed. Press any key to continue", (DateTime.Now - startDateTime).TotalSeconds);
                 Console.ReadKey();
@@ -108,6 +120,7 @@ namespace GB2MS2Updater
             Console.WriteLine("         -p <FirmwarePath>      File path where the firmware update files are located");
             Console.WriteLine("         -d <DeviceType>        DeviceType which has to be updated. Valid values: 'MS2' or 'GB2'");
             Console.WriteLine("         -f                     Force update even if device has already the same version");
+            Console.WriteLine("         -filesonly             Only update MS2 files");
             Console.WriteLine("         -v                     Verbose output");
             Console.WriteLine();
             Console.WriteLine("Example: {0} -c COM5 -d MS2 -p .\\cs3update_v2.10.btrfs\\usr\\local\\cs3\\update", Assembly.GetExecutingAssembly().GetName().Name);

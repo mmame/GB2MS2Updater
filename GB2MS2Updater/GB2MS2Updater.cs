@@ -417,9 +417,9 @@ namespace GB2MS2Updater
                         Console.WriteLine("received CAN Ping {0}\n", e.CANMessage);
                         if (CurrentDeviceHash == (e.CANMessage.Id & 0x00FFFF))
                         {
-                            if (FileUpdateRunning)
+                            if (!FileUpdateRunning)
                             {
-                                //Pin received from update device so we expect the File update has been completed
+                                //Ping received from update device so we expect the File update has been completed
                                 Console.WriteLine("UPDATE COMPLETE");
 
                                 UpdateCompletedAutoResetEvent.Set();
@@ -584,7 +584,12 @@ namespace GB2MS2Updater
                                 Console.WriteLine("Request file {0} block {1}", RequestedConfigNameData, requestedBlockIndex);
 
                                 byte[] bytesToSend = DataBytesToSendWithPadding.Skip(requestedBlockIndex * CurrentUpdateFiles[CurrentUpdateFileIndex].blockSize).Take(CurrentUpdateFiles[CurrentUpdateFileIndex].blockSize).ToArray();
-
+                                //check if requested block is last block
+                                if (DataBytesToSendWithPadding.Length / CurrentUpdateFiles[CurrentUpdateFileIndex].blockSize == requestedBlockIndex)
+                                {
+                                    FileUpdateRunning = false;
+                                }
+                                
                                 byte[] fileSizeBytes = BitConverter.GetBytes(bytesToSend.Length).ToBigEndian();
 
                                 //Prepare messages for later sending (FFFFFF... message)
